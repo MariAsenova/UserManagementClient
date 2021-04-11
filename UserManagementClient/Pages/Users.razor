@@ -1,0 +1,64 @@
+﻿@page "/Users"
+@using System.Collections
+@using UserManagementClient.Data
+@using UserManagementClient.Models
+@inject IUserService UserService;
+
+<h3>Users</h3>
+
+@if (users == null)
+{
+    <p>
+        <em>
+            Loading.....
+        </em>
+    </p>
+}
+else if (!users.Any())
+{
+    <p>
+        <em>
+            No users to show
+        </em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var user in users)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.Name</td>
+                <td>@user.Email</td>
+        <!--  
+        <td>
+            <button>
+                <i class="oi oi-pencil" style="color:#1b6ec2"/>
+            </button>
+        </td>
+        -->
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    private IList<User> users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        users = await UserService.GetAllUsersAsync();
+    }
+
+}
